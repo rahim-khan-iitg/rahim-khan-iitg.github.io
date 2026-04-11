@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rahim Khan — ML Scientist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --border: #1e1e2e;
+      --accent: #7cffd4;
+      --accent2: #ff6b6b;
+      --accent3: #ffd166;
+      --text: #e8e8f0;
+      --muted: #6b6b88;
+      --card: #13131f;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* GRID NOISE BACKGROUND */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(124,255,212,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(124,255,212,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem 6vw;
+      position: relative;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.2s;
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -3px;
+      color: var(--text);
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.4s;
+    }
+
+    .hero h1 .accent { color: var(--accent); }
+
+    .hero-subtitle {
+      margin-top: 2rem;
+      font-size: 13px;
+      color: var(--muted);
+      max-width: 480px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.6s;
+    }
+
+    .hero-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.8s;
+    }
+
+    .hero-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.2rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 1px;
+      transition: all 0.2s;
+      background: var(--surface);
+    }
+
+    .hero-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(124,255,212,0.05);
+    }
+
+    .hero-deco {
+      position: absolute;
+      right: 6vw;
+      top: 50%;
+      transform: translateY(-50%);
+      width: min(340px, 40vw);
+      aspect-ratio: 1;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards 1s;
+    }
+
+    .hero-deco::after {
+      content: '';
+      position: absolute;
+      inset: 20px;
+      border: 1px dashed rgba(124,255,212,0.2);
+      border-radius: 50%;
+      animation: spin 20s linear infinite;
+    }
+
+    .hero-deco-inner {
+      width: 60%;
+      aspect-ratio: 1;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--accent);
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* SECTION LAYOUT */
+    section {
+      padding: 6rem 6vw;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -1.5px;
+      margin-bottom: 3rem;
+    }
+
+    /* EXPERIENCE */
+    .exp-grid { display: grid; gap: 2px; }
+
+    .exp-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      transition: border-color 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .exp-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--accent);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.3s;
+    }
+
+    .exp-card:hover::before { transform: scaleY(1); }
+    .exp-card:hover { border-color: rgba(124,255,212,0.3); }
+
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.5rem;
+    }
+
+    .exp-company {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .exp-period {
+      font-size: 11px;
+      color: var(--accent);
+      border: 1px solid rgba(124,255,212,0.3);
+      padding: 0.2rem 0.7rem;
+      white-space: nowrap;
+    }
+
+    .exp-role {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+
+    .exp-bullets { list-style: none; }
+
+    .exp-bullets li {
+      padding: 0.3rem 0;
+      padding-left: 1.2rem;
+      position: relative;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .exp-bullets li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+    .exp-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 1.2rem;
+    }
+
+    .tag {
+      font-size: 10px;
+      letter-spacing: 1px;
+      padding: 0.2rem 0.6rem;
+      background: rgba(124,255,212,0.07);
+      border: 1px solid rgba(124,255,212,0.15);
+      color: var(--accent);
+    }
+
+    /* PROJECTS */
+    .proj-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2px;
+    }
+
+    .proj-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .proj-card:hover {
+      border-color: rgba(255,107,107,0.4);
+      transform: translateY(-3px);
+    }
+
+    .proj-number {
+      font-family: 'Syne', sans-serif;
+      font-size: 4rem;
+      font-weight: 800;
+      color: rgba(255,107,107,0.08);
+      position: absolute;
+      top: 0.5rem;
+      right: 1rem;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .proj-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .proj-date {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--accent2);
+      margin-bottom: 1rem;
+    }
+
+    .proj-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .proj-tags { margin-top: 1.2rem; }
+
+    /* SKILLS */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 2px;
+    }
+
+    .skill-group {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+    }
+
+    .skill-group-title {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent3);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .skill-group-title::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--accent3);
+      border-radius: 50%;
+    }
+
+    .skill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .skill-tag {
+      font-size: 11px;
+      padding: 0.3rem 0.7rem;
+      background: rgba(255,209,102,0.06);
+      border: 1px solid rgba(255,209,102,0.15);
+      color: var(--text);
+    }
+
+    /* ACHIEVEMENTS */
+    .ach-grid { display: grid; gap: 2px; }
+
+    .ach-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+      transition: border-color 0.2s;
+    }
+
+    .ach-card:hover { border-color: rgba(255,209,102,0.3); }
+
+    .ach-rank {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--accent3);
+      line-height: 1;
+      min-width: 60px;
+    }
+
+    .ach-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+
+    .ach-desc { font-size: 12px; color: var(--muted); }
+
+    /* EDUCATION */
+    .edu-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .edu-degree {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 0.3rem;
+    }
+
+    .edu-school { font-size: 12px; color: var(--accent); letter-spacing: 1px; }
+
+    .edu-gpa {
+      font-family: 'Syne', sans-serif;
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--accent);
+      text-align: right;
+    }
+
+    .edu-gpa span { font-size: 1rem; color: var(--muted); display: block; text-align: right; }
+
+    .edu-courses {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .edu-course {
+      font-size: 10px;
+      letter-spacing: 1px;
+      padding: 0.25rem 0.6rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 3rem 6vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    footer .name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    footer .copy { font-size: 11px; color: var(--muted); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 700px) {
+      .hero-deco { display: none; }
+      section { padding: 4rem 5vw; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">// ML Scientist & Mathematician</div>
+  <h1>Rahim<br /><span class="accent">Khan</span></h1>
+  <p class="hero-subtitle">
+    MSc. Mathematics & Computing · IIT Guwahati · Building intelligent systems at the intersection of deep learning, signal processing, and NLP.
+  </p>
+  <div class="hero-links">
+    <a class="hero-link" href="https://github.com/rahimkhan76270" target="_blank">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      github.com/rahimkhan76270
+    </a>
+    <a class="hero-link" href="https://linkedin.com/in/rahim-khan-iitg" target="_blank">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      linkedin.com/in/rahim-khan-iitg
+    </a>
+    <a class="hero-link" href="mailto:rahimkhan7627047457@gmail.com">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+      rahimkhan7627047457@gmail.com
+    </a>
+    <a class="hero-link" href="tel:+917627047457">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.16 6.16l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+      +91 76270 47457
+    </a>
+  </div>
+
+  <div class="hero-deco">
+    <div class="hero-deco-inner">IIT<br/>GUWAHATI<br/>2024</div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">01 — Experience</div>
+  <h2 class="section-title">Where I've<br />Worked</h2>
+  <div class="exp-grid">
+
+    <div class="exp-card">
+      <div class="exp-header">
+        <div class="exp-company">Xelpmoc Design & Tech</div>
+        <div class="exp-period">Jan 2025 — Present</div>
+      </div>
+      <div class="exp-role">Machine Learning Scientist</div>
+      <ul class="exp-bullets">
+        <li>Developed a layout-based chunking strategy for RAG pipeline on legal documents, reducing error rates by 10%.</li>
+        <li>Implemented facial recognition using DeepFace on Jetson Nano Orin, achieving 98% accuracy in real-world testing.</li>
+        <li>Conducting research on few-shot A* search for efficient pathfinding and decision-making applications.</li>
+      </ul>
+      <div class="exp-tags">
+        <span class="tag">OCR</span>
+        <span class="tag">CUDA</span>
+        <span class="tag">Transformers</span>
+        <span class="tag">RAG</span>
+        <span class="tag">DeepFace</span>
+        <span class="tag">Jetson Orin</span>
+      </div>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-header">
+        <div class="exp-company">Oriserve</div>
+        <div class="exp-period">Jul 2024 — Jan 2025</div>
+      </div>
+      <div class="exp-role">Data Science Intern</div>
+      <ul class="exp-bullets">
+        <li>Fine-tuned a ConvTasNet model for voice separation on telephonic data, achieving a 4% reduction in DER.</li>
+        <li>Trained a compact DeepSpeaker model for speaker embedding, boosting classification accuracy from 81% → 90%.</li>
+        <li>Designed an in-memory neural diarization pipeline optimized for deployment over file-based NeMo diarization.</li>
+        <li>Built a mathematical model for real vs. fake audio classification achieving 80% accuracy.</li>
+      </ul>
+      <div class="exp-tags">
+        <span class="tag">Python</span>
+        <span class="tag">FastAPI</span>
+        <span class="tag">PyTorch</span>
+        <span class="tag">TensorFlow</span>
+        <span class="tag">NeMo</span>
+        <span class="tag">Git</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">02 — Projects</div>
+  <h2 class="section-title">Things I've<br />Built</h2>
+  <div class="proj-grid">
+
+    <div class="proj-card">
+      <div class="proj-number">01</div>
+      <div class="proj-title">Libtorch TiTaNet</div>
+      <div class="proj-date">Oct 2024</div>
+      <p class="proj-desc">
+        Implemented the TiTaNet speaker embedding model in LibTorch/C++ from scratch, including Attention Pooling, 1D Depthwise Separable Convolutions, and Squeeze & Excitation for channel-wise feature recalibration.
+      </p>
+      <div class="proj-tags">
+        <span class="tag" style="border-color:rgba(255,107,107,0.2);background:rgba(255,107,107,0.06);color:#ff6b6b;">LibTorch</span>
+        <span class="tag" style="border-color:rgba(255,107,107,0.2);background:rgba(255,107,107,0.06);color:#ff6b6b;">C++</span>
+        <span class="tag" style="border-color:rgba(255,107,107,0.2);background:rgba(255,107,107,0.06);color:#ff6b6b;">CMake</span>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-number">02</div>
+      <div class="proj-title">Hindi NER</div>
+      <div class="proj-date">Jun 2024</div>
+      <p class="proj-desc">
+        Built a Named Entity Recognition model for Hindi using a PyTorch Transformer, with BPE tokenization from HuggingFace. Trained on the IIT Bombay cfilt/HiNER-collapsed dataset across 7 entity categories.
+      </p>
+      <div class="proj-tags">
+        <span class="tag" style="border-color:rgba(255,107,107,0.2);background:rgba(255,107,107,0.06);color:#ff6b6b;">PyTorch</span>
+        <span class="tag" style="border-color:rgba(255,107,107,0.2);background:rgba(255,107,107,0.06);color:#ff6b6b;">Transformers</span>
+        <span class="tag" style="border-color:rgba(255,107,107,0.2);background:rgba(255,107,107,0.06);color:#ff6b6b;">BPE</span>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-number">03</div>
+      <div class="proj-title">Underwater Image Enhancement</div>
+      <div class="proj-date">Jan – May 2024</div>
+      <p class="proj-desc">
+        Research project under Dr. R.K. Sinha (IITG). Studied and implemented a Retinex-based image processing method using Bayesian Retinex framework for enhancing degraded underwater images.
+      </p>
+      <div class="proj-tags">
+        <span class="tag" style="border-color:rgba(255,107,107,0.2);background:rgba(255,107,107,0.06);color:#ff6b6b;">Python</span>
+        <span class="tag" style="border-color:rgba(255,107,107,0.2);background:rgba(255,107,107,0.06);color:#ff6b6b;">OpenCV</span>
+        <span class="tag" style="border-color:rgba(255,107,107,0.2);background:rgba(255,107,107,0.06);color:#ff6b6b;">Scikit-image</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">03 — Skills</div>
+  <h2 class="section-title">Tools &<br />Technologies</h2>
+  <div class="skills-grid">
+    <div class="skill-group">
+      <div class="skill-group-title">Languages</div>
+      <div class="skill-list">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">C</span>
+        <span class="skill-tag">C++</span>
+        <span class="skill-tag">Matlab</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">ML / DL Frameworks</div>
+      <div class="skill-list">
+        <span class="skill-tag">PyTorch</span>
+        <span class="skill-tag">TensorFlow</span>
+        <span class="skill-tag">LibTorch</span>
+        <span class="skill-tag">Scikit-learn</span>
+        <span class="skill-tag">Transformers</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">NLP</div>
+      <div class="skill-list">
+        <span class="skill-tag">BERT</span>
+        <span class="skill-tag">GPT</span>
+        <span class="skill-tag">LLMs</span>
+        <span class="skill-tag">LangChain</span>
+        <span class="skill-tag">spaCy</span>
+        <span class="skill-tag">NLTK</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Data & Viz</div>
+      <div class="skill-list">
+        <span class="skill-tag">NumPy</span>
+        <span class="skill-tag">Pandas</span>
+        <span class="skill-tag">Matplotlib</span>
+        <span class="skill-tag">Seaborn</span>
+        <span class="skill-tag">Pillow</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Backend / APIs</div>
+      <div class="skill-list">
+        <span class="skill-tag">FastAPI</span>
+        <span class="skill-tag">Flask</span>
+        <span class="skill-tag">Django</span>
+        <span class="skill-tag">Streamlit</span>
+        <span class="skill-tag">SQL</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Frontend / DevOps</div>
+      <div class="skill-list">
+        <span class="skill-tag">Next.js</span>
+        <span class="skill-tag">HTML</span>
+        <span class="skill-tag">CSS</span>
+        <span class="skill-tag">Git</span>
+        <span class="skill-tag">GitHub</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="section-label">04 — Achievements</div>
+  <h2 class="section-title">Milestones</h2>
+  <div class="ach-grid">
+    <div class="ach-card">
+      <div class="ach-rank" style="color: var(--accent);">#11</div>
+      <div>
+        <div class="ach-title">LeetGPU CUDA Global Leaderboard</div>
+        <p class="ach-desc">Ranked 11th worldwide on LeetGPU for CUDA kernel optimization challenges — competing in high-performance GPU programming on a global stage.</p>
+      </div>
+    </div>
+    <div class="ach-card">
+      <div class="ach-rank">#2</div>
+      <div>
+        <div class="ach-title">Pan IIT Gen AI Hackathon 2023</div>
+        <p class="ach-desc">Achieved 2nd rank among all IIT students nationwide, in the Gen AI Hackathon conducted by Spark4AI, IIT Kharagpur.</p>
+      </div>
+    </div>
+    <div class="ach-card">
+      <div class="ach-rank">#26</div>
+      <div>
+        <div class="ach-title">IIT JAM Mathematics 2022</div>
+        <p class="ach-desc">All India Rank 26 out of 13,000+ students in one of India's most competitive postgraduate entrance exams.</p>
+      </div>
+    </div>
+    <div class="ach-card">
+      <div class="ach-rank">#719</div>
+      <div>
+        <div class="ach-title">IIT JAM Mathematics 2021</div>
+        <p class="ach-desc">Secured All India Rank 719 out of 14,470+ students in IIT JAM Mathematics.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-label">05 — Education</div>
+  <h2 class="section-title">Academic<br />Background</h2>
+  <div class="edu-card">
+    <div>
+      <div class="edu-degree">MSc. Mathematics & Computing</div>
+      <div class="edu-school">Indian Institute of Technology, Guwahati · Class of 2024</div>
+      <div class="edu-courses">
+        <span class="edu-course">Programming in C</span>
+        <span class="edu-course">Data Structures & Algorithms</span>
+        <span class="edu-course">DBMS</span>
+        <span class="edu-course">Probability Theory</span>
+        <span class="edu-course">Statistical Inference</span>
+        <span class="edu-course">Numerical Linear Algebra</span>
+        <span class="edu-course">Numerics of PDEs</span>
+        <span class="edu-course">MATLAB</span>
+      </div>
+    </div>
+    <div>
+      <div class="edu-gpa">7.05<span>/ 10.00 GPA</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="name">Rahim Khan</div>
+  <div class="copy">// Built with HTML · CSS · JS &nbsp;·&nbsp; 2025</div>
+</footer>
+
+</body>
+</html>
